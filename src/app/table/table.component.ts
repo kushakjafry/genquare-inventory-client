@@ -1,55 +1,57 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import { BooksTableDataSource } from './books-table-datasource';
+import { MatTableDataSource } from '@angular/material/table';
 import { BOOK } from '../model/book';
 import { BookService } from '../services/book.service';
 import { SnackbarService } from '../services/snackbar.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-books-table',
-  templateUrl: './books-table.component.html',
-  styleUrls: ['./books-table.component.scss'],
+  selector: 'app-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss'],
 })
-export class BooksTableComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<BOOK>;
-  dataSource: BooksTableDataSource;
-  showCheck: boolean = false;
+export class TableComponent implements OnInit, AfterViewInit {
+  showStartingSpinner: boolean = true;
+  displayedColumns: string[] = ['skuId', 'name', 'stocks', 'edit'];
+  dataSource: MatTableDataSource<BOOK>;
   Books: BOOK[];
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['skuId', 'name', 'stocks', 'edit'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private bookService: BookService,
-    private snackbarService: SnackbarService,
+    private snackBarService: SnackbarService,
     private router: Router
   ) {}
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.bookService.getBooks().subscribe(
-      (books) => {
+      (books: BOOK[]) => {
         this.Books = books;
-        this.dataSource = new BooksTableDataSource(books);
-        this.dataSource.sort = this.sort;
+        this.showStartingSpinner = false;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(books);
         this.dataSource.paginator = this.paginator;
-        this.table.dataSource = this.dataSource;
+        this.dataSource.sort = this.sort;
+        this.snackBarService.openSnackBar('All books loaded', 'cancel');
       },
       (err) => {
-        console.log(err);
-        this.dataSource = new BooksTableDataSource([]);
+        this.showStartingSpinner = false;
         if (err.indexOf('401') !== -1) {
-          this.snackbarService.openSnackBar(
+          this.snackBarService.openSnackBar(
             'Kindly Login to continue',
             'cancel'
           );
           this.router.navigateByUrl('/login');
         } else {
-          this.snackbarService.openSnackBar(
-            'Some error occured kindly visit after sometime',
+          this.dataSource = new MatTableDataSource([]);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          this.snackBarService.openSnackBar(
+            'Some error occured kindly try after sometime',
             'cancel'
           );
         }
@@ -57,6 +59,18 @@ export class BooksTableComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit() {}
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  // intialization searching of certain element on dom
   documentSearching(skuId: string): any {
     let firstChar = skuId.charAt(0);
     let remainingChar = skuId.substring(1);
@@ -72,6 +86,7 @@ export class BooksTableComponent implements OnInit {
     };
   }
 
+  // editing a book
   edit(row: any) {
     let skuId: string = row.skuId;
     let search = this.documentSearching(skuId);
@@ -82,6 +97,7 @@ export class BooksTableComponent implements OnInit {
     search.editButton.classList.add('hidden');
   }
 
+  // updating a book
   save(row: any) {
     let skuId: string = row.skuId;
     let search = this.documentSearching(skuId);
@@ -105,16 +121,15 @@ export class BooksTableComponent implements OnInit {
     this.bookService.updateBook(skuId, name, stocks).subscribe(
       (book: BOOK) => {
         this.Books[index] = book;
-        this.dataSource = new BooksTableDataSource(this.Books);
+        this.dataSource = new MatTableDataSource(this.Books);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        this.table.dataSource = this.dataSource;
-        this.snackbarService.openSnackBar(`updated ${book.name}`, 'cancel');
+        this.snackBarService.openSnackBar(`updated ${book.name}`, 'cancel');
         spinner.classList.add('hidden');
         search.editButton.classList.remove('hidden');
       },
       (err) => {
-        this.snackbarService.openSnackBar('some error occured', 'cancel');
+        this.snackBarService.openSnackBar('some error occured', 'cancel');
         search.searchClass.forEach((inputs) => {
           inputs.setAttribute('disabled', '');
           spinner.classList.add('hidden');

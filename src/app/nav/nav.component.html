@@ -13,6 +13,9 @@
       <a mat-list-item routerLink="/book" routerLinkActive="active-link"
         >Book List</a
       >
+      <a mat-list-item routerLink="/addbook" routerLinkActive="active-link"
+        >Add Book</a
+      >
       <a mat-list-item routerLink="/login" routerLinkActive="active-link"
         >Login</a
       >
@@ -39,10 +42,26 @@
           >Book list</a
         >
         <a
+          routerLink="/addbook"
+          routerLinkActive="active-link"
+          class="main_toolbar_link"
+          >Add Book</a
+        >
+        <a
           routerLink="/login"
           routerLinkActive="active-link"
           class="main_toolbar_link"
+          *ngIf="!username"
           >Login</a
+        >
+        <a class="main_toolbar_link active-link" *ngIf="username">{{
+          username
+        }}</a>
+        <a
+          class="main_toolbar_link logout_link"
+          *ngIf="username"
+          (click)="logOut()"
+          >Logout</a
         >
       </div>
     </mat-toolbar>

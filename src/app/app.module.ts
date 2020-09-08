@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
 
 //components
 import { AppComponent } from './app.component';
-import { BooksTableComponent } from './books-table/books-table.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { LoginComponent } from './login/login.component';
 
@@ -25,14 +24,17 @@ import { BookService } from './services/book.service';
 import { AuthService } from './services/auth.service';
 import { ProcessHttpErrorMsgService } from './services/process-http-error-msg.service';
 import { SnackbarService } from './services/snackbar.service';
+import { TableComponent } from './table/table.component';
+import { AddBookComponent } from './add-book/add-book.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    BooksTableComponent,
     BookListComponent,
     LoginComponent,
+    TableComponent,
+    AddBookComponent,
   ],
   imports: [
     BrowserModule,

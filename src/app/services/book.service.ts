@@ -25,4 +25,13 @@ export class BookService {
       .put<BOOK>(`${baseURL}books/${skuId}`, { name: name, stocks: stocks })
       .pipe(catchError(this.processHttpErrorMsgService.handleError));
   }
+  postBook(skuId: string, name: string, stocks: any): Observable<BOOK> {
+    return this.http
+      .post<BOOK>(`${baseURL}books`, {
+        name: name,
+        stocks: stocks,
+        skuId: skuId,
+      })
+      .pipe(catchError(this.processHttpErrorMsgService.handleError));
+  }
 }

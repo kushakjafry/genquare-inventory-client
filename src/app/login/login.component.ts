@@ -73,11 +73,7 @@ export class LoginComponent implements OnInit {
     this.authService.logIn(this.loginForm.value).subscribe(
       (res) => {
         this.hideForm = false;
-        if (res.success) {
-          this.router.navigateByUrl('/book');
-        } else {
-          console.log(res);
-        }
+        this.router.navigateByUrl('/book');
       },
       (error) => {
         this.hideForm = false;
