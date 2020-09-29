@@ -5,7 +5,7 @@
   margin-top: 20px;
   width: 70%;
   margin-left: 15%;
-  background: white;
+  background: wheat;
   padding-bottom: 20px;
 }
 form {
@@ -14,7 +14,10 @@ form {
 mat-form-field {
   width: 45%;
 }
-mat-form-field:first-of-type {
+mat-form-field:nth-of-type(1) {
+  margin-right: 5%;
+}
+mat-form-field:nth-of-type(3) {
   margin-right: 5%;
 }
 .addingSpinner {

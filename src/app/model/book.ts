@@ -3,4 +3,6 @@ export interface BOOK {
   skuId: string;
   name: string;
   stocks: number;
+  publisher: string;
+  price: number;
 }

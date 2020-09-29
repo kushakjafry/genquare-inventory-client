@@ -4,16 +4,18 @@ import { BookListComponent } from './book-list/book-list.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AddBookComponent } from './add-book/add-book.component';
+import { BarcodeScanComponent } from './barcode-scan/barcode-scan.component';
 
 const routes: Routes = [
   { path: 'book', component: BookListComponent, canActivate: [AuthGuard] },
   { path: 'addbook', component: AddBookComponent, canActivate: [AuthGuard] },
+  { path: 'scan', component: BarcodeScanComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/book', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -4,28 +4,32 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
-import { NavComponent } from './nav/nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import {
-  AuthInterceptor,
-  UnauthorizedInterceptor,
-} from './services/auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 //components
 import { AppComponent } from './app.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { LoginComponent } from './login/login.component';
+import { NavComponent } from './nav/nav.component';
+import { BarcodeScanComponent } from './barcode-scan/barcode-scan.component';
+import { TableComponent } from './table/table.component';
+import { AddBookComponent } from './add-book/add-book.component';
+import { FileUploadBooksComponent } from './file-upload-books/file-upload-books.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 // services
 import { BookService } from './services/book.service';
 import { AuthService } from './services/auth.service';
 import { ProcessHttpErrorMsgService } from './services/process-http-error-msg.service';
 import { SnackbarService } from './services/snackbar.service';
-import { TableComponent } from './table/table.component';
-import { AddBookComponent } from './add-book/add-book.component';
+import {
+  AuthInterceptor,
+  UnauthorizedInterceptor,
+} from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -35,6 +39,9 @@ import { AddBookComponent } from './add-book/add-book.component';
     LoginComponent,
     TableComponent,
     AddBookComponent,
+    BarcodeScanComponent,
+    FileUploadBooksComponent,
+    AutofocusDirective,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +52,7 @@ import { AddBookComponent } from './add-book/add-book.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxQRCodeModule,
   ],
   providers: [
     BookService,

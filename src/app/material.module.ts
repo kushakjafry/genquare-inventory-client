@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const modules = [
   MatToolbarModule,
@@ -25,6 +26,7 @@ const modules = [
   MatInputModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
+  MatTabsModule,
 ];
 
 @NgModule({

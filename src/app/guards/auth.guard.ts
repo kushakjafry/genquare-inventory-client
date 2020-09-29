@@ -22,10 +22,12 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const currentUser = this.auth.currentUserValue;
-    if (currentUser) {
+    console.log('hi authguard called');
+    const JSONUser = JSON.parse(localStorage.getItem('JWT'));
+    if (JSONUser) {
       return true;
     } else {
+      console.log('authGuard failed');
       this.router.navigate(['/login']);
       return false;
     }
